@@ -5,14 +5,23 @@ using UnityEngine.UI;
 public class PlayerController : MonoBehaviour {
 
     public VirtualJoyStick joyStick;
+    public float pTemp = 50.0f;
     public float moveSpeed = 5.0f;
     public float drag = 0.5f;
+    public float transferHeat = 0.5f;
+
+    static public float temp;
 
     private Vector3 moveDirection;
     private float xMin, xMax, yMin, yMax;
+    private Text playerTemp;
 
 	void Start ()
     {
+        temp = pTemp;
+       // playerTemp = transform.GetChild(0).GetComponent<Text>();
+        //playerTemp.text = temp.ToString();
+
         //Initialization of boundaries
         xMax = Screen.width - 50; // I used 50 because the size of player is 100*100
         xMin = 50;
@@ -26,26 +35,23 @@ public class PlayerController : MonoBehaviour {
 
         if(moveDirection.magnitude != 0)
         {
-            transform.position += moveDirection * moveSpeed;
-            transform.position = new Vector3(Mathf.Clamp(transform.position.x, xMin, xMax), Mathf.Clamp(transform.position.y, yMin, yMax), 0f);
+            transform.localPosition += moveDirection * moveSpeed;
+            //transform.localPosition = new Vector3(Mathf.Clamp(transform.localPosition.x, xMin, xMax), Mathf.Clamp(transform.localPosition.y, yMin, yMax), 0f);
         }
     }
 
-    /*Vector3 UpdateJoyStickPos()
+    void OnCollisionEnter2D(Collision2D collision)
     {
-        Vector3 direction = Vector3.zero;
-
-        direction.x = joyStick.Horizontal();
-        direction.z = joyStick.Vertical();
-
-        if (direction.magnitude > 1)
-            direction.Normalize();
-
-        return direction;
+        if(collision.gameObject.CompareTag("Target"))
+        {
+            //Debug.Log("Collide with " + collision.gameObject);
+        }
     }
 
-    void UpdatePlayerPos()
+    void OnCollisionStay2D(Collision2D collision)
     {
-        playerRigidBody.AddForce(moveVector * moveSpeed);
-    }*/
+        if (collision.gameObject.CompareTag("Target"))
+            temp -= transferHeat * Time.deltaTime;       
+            
+    }  
 }
