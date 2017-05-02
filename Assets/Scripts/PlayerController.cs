@@ -7,26 +7,33 @@ public class PlayerController : MonoBehaviour {
     public VirtualJoyStick joyStick;
     public float pTemp = 50.0f;
     public float moveSpeed = 5.0f;
-    public float drag = 0.5f;
     public float transferHeat = 0.5f;
+    public GameObject bg;
+    public Scrollbar playerBar;
+    public Text playerText;
+
 
     static public float temp;
 
     private Vector3 moveDirection;
     private float xMin, xMax, yMin, yMax;
-    private Text playerTemp;
+    private float maxTemp = 100f;
+
+    void Awake()
+    {
+        temp = pTemp;
+    }
 
 	void Start ()
     {
-        temp = pTemp;
-       // playerTemp = transform.GetChild(0).GetComponent<Text>();
-        //playerTemp.text = temp.ToString();
+        SetTempBar();
+        SetTempText();
 
-        //Initialization of boundaries
-        xMax = Screen.width - 50; // I used 50 because the size of player is 100*100
-        xMin = 50;
-        yMax = Screen.height - 50;
-        yMin = 50;
+        // will change this later
+        xMin = -8;
+        xMax = 8;
+        yMin = -5;
+        yMax = 5;
     }
 	
 	void Update ()
@@ -36,7 +43,11 @@ public class PlayerController : MonoBehaviour {
         if(moveDirection.magnitude != 0)
         {
             transform.localPosition += moveDirection * moveSpeed;
-            //transform.localPosition = new Vector3(Mathf.Clamp(transform.localPosition.x, xMin, xMax), Mathf.Clamp(transform.localPosition.y, yMin, yMax), 0f);
+
+            float clampX = Mathf.Clamp(transform.localPosition.x, xMin, xMax);
+            float clampY = Mathf.Clamp(transform.localPosition.y, yMin, yMax);
+
+            transform.localPosition = new Vector3(clampX, clampY, transform.localPosition.z);
         }
     }
 
@@ -51,7 +62,20 @@ public class PlayerController : MonoBehaviour {
     void OnCollisionStay2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Target"))
-            temp -= transferHeat * Time.deltaTime;       
-            
+        {
+            temp -= transferHeat * Time.deltaTime;
+            SetTempBar();
+            SetTempText();
+        }        
     }  
+
+    void SetTempBar()
+    {
+        playerBar.size = temp / maxTemp;
+    }
+
+    void SetTempText()
+    {
+        playerText.text = temp.ToString("N0");
+    }
 }

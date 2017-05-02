@@ -117,7 +117,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2be05de24349f9641ad44f5fe71121ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  temp: 10
+  TTemp: 10
+  transferHeat: 0.5
 --- !u!222 &222000010656852354
 CanvasRenderer:
   m_ObjectHideFlags: 1

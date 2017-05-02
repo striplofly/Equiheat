@@ -80,4 +80,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timer: {fileID: 0}
-  timeLimit: 10
+  timeLimit: 15
