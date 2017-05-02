@@ -34,14 +34,6 @@ public class GameController : MonoBehaviour {
             winPanel.SetActive(true);
         }
 
-        setTempature();
-
         yield return null;
-    }
-
-    void setTempature()
-    {
-        playerTemp.text = PlayerController.temp.ToString("N0");
-        targetTemp.text = TargetElementController.temp.ToString("N0");
     }
 }

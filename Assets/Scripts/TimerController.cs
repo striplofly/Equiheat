@@ -26,7 +26,7 @@ public class TimerController : MonoBehaviour {
             timeLimit -= Time.deltaTime;
             timer.text = "00:" + timeLimit.ToString("N0");
 
-            if (timeLimit < 10 )
+            if (Mathf.RoundToInt(timeLimit) < 10)
                 timer.text = "00:0" + timeLimit.ToString("N0");
         }
 
