@@ -12,7 +12,6 @@ public class PlayerController : MonoBehaviour {
     public Scrollbar playerBar;
     public Text playerText;
 
-
     static public float temp;
 
     private Vector3 moveDirection;
