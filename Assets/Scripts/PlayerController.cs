@@ -5,14 +5,14 @@ using UnityEngine.UI;
 public class PlayerController : MonoBehaviour {
 
     public VirtualJoyStick joyStick;
-    public float pTemp = 50.0f;
-    public float moveSpeed = 5.0f;
+	public float moveSpeed;
+    public float initialTemp = 50.0f;
     public float transferHeat = 0.5f;
     public GameObject bg;
     public Scrollbar playerBar;
     public Text playerText;
 
-    static public float temp;
+	static public float currentTemp;
 
     private Vector3 moveDirection;
     private float xMin, xMax, yMin, yMax;
@@ -20,13 +20,13 @@ public class PlayerController : MonoBehaviour {
 
     void Awake()
     {
-        temp = pTemp;
+		currentTemp = initialTemp;
     }
 
 	void Start ()
     {
         SetTempBar();
-        SetTempText();
+		SetTempText();
 
         // will change this later
         xMin = -8;
@@ -37,44 +37,43 @@ public class PlayerController : MonoBehaviour {
 	
 	void Update ()
     {
-        moveDirection = joyStick.inputVector;
-
-        if(moveDirection.magnitude != 0)
-        {
-            transform.localPosition += moveDirection * moveSpeed;
-
-            float clampX = Mathf.Clamp(transform.localPosition.x, xMin, xMax);
-            float clampY = Mathf.Clamp(transform.localPosition.y, yMin, yMax);
-
-            transform.localPosition = new Vector3(clampX, clampY, transform.localPosition.z);
-        }
+		PlayerMove ();
     }
 
-    void OnCollisionEnter2D(Collision2D collision)
-    {
-        if(collision.gameObject.CompareTag("Target"))
-        {
-            //Debug.Log("Collide with " + collision.gameObject);
-        }
-    }
+	void PlayerMove (){
+		moveDirection = joyStick.inputVector;
 
-    void OnCollisionStay2D(Collision2D collision)
+		if (moveDirection.magnitude != 0)
+		{
+			transform.localPosition += moveDirection * moveSpeed;
+
+			//float clampX = Mathf.Clamp(transform.localPosition.x, xMin, xMax);
+			//float clampY = Mathf.Clamp(transform.localPosition.y, yMin, yMax);
+			//transform.localPosition = new Vector3(clampX, clampY, transform.localPosition.z);
+		}
+			
+		Debug.Log ("Player Move Values : " + moveDirection);
+	}
+
+	void OnCollisionStay2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Target"))
-        {
-            temp -= transferHeat * Time.deltaTime;
-            SetTempBar();
-            SetTempText();
-        }        
+		//Debug.Log ("Collision detected");
+
+		if (collision.gameObject.CompareTag ("Target")) {
+			currentTemp -= transferHeat * Time.deltaTime;
+			SetTempBar ();
+			SetTempText ();
+		} 
+
     }  
 
     void SetTempBar()
     {
-        playerBar.size = temp / maxTemp;
+		playerBar.size = currentTemp / maxTemp;
     }
 
     void SetTempText()
     {
-        playerText.text = temp.ToString("N0");
+		playerText.text = currentTemp.ToString("N0");
     }
 }
