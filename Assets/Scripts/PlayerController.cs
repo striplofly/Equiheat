@@ -52,7 +52,7 @@ public class PlayerController : MonoBehaviour {
 			//transform.localPosition = new Vector3(clampX, clampY, transform.localPosition.z);
 		}
 			
-		Debug.Log ("Player Move Values : " + moveDirection);
+		//Debug.Log ("Player Move Values : " + moveDirection);
 	}
 
 	void OnCollisionStay2D(Collision2D collision)
