@@ -9,6 +9,8 @@ public class FireController : MonoBehaviour
     public Transform player;
 
     private Vector3 moveLeft, moveRight, moveUp, moveDown;
+    private Rigidbody2D rigidBody;
+    private bool goLeft, goRight, goUp, goDown;
 
 	void Start()
     {
@@ -16,6 +18,10 @@ public class FireController : MonoBehaviour
         moveRight = Vector2.right;
         moveUp = Vector2.up;
         moveDown = Vector2.down;
+
+        rigidBody = GetComponent<Rigidbody2D>();
+
+        goRight = true;
     }
 
 	void Update ()
@@ -35,7 +41,11 @@ public class FireController : MonoBehaviour
 
     void MoveHorizontal()
     {
-        transform.position += moveRight * speed * Time.deltaTime;
+        if(goRight)
+            transform.position += moveRight * speed * Time.deltaTime;
+
+        if(goLeft)
+            transform.position += moveLeft * speed * Time.deltaTime;
     }
 
     void MoveVertical()
@@ -53,8 +63,18 @@ public class FireController : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Wall"))
         {
+            if(isHorizontal)
+            {
+                if (transform.localPosition.x > 0)
+                    goLeft = true;
+
+                if (transform.localPosition.x < 0)
+                    goRight = true;
+            }
+
             
         }
+            
     }
 
     public int TempVal
