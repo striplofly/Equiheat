@@ -28,12 +28,6 @@ public class PlayerController : MonoBehaviour {
     {
         SetTempBar();
         SetTempText();
-
-        // will change this later
-        xMin = -8;
-        xMax = 8;
-        yMin = -5;
-        yMax = 5;
     }
 	
 	void Update ()
@@ -41,21 +35,18 @@ public class PlayerController : MonoBehaviour {
         moveDirection = joyStick.inputVector;
 
         if(moveDirection.magnitude != 0)
-        {
             transform.localPosition += moveDirection * moveSpeed;
-
-            float clampX = Mathf.Clamp(transform.localPosition.x, xMin, xMax);
-            float clampY = Mathf.Clamp(transform.localPosition.y, yMin, yMax);
-
-            transform.localPosition = new Vector3(clampX, clampY, transform.localPosition.z);
-        }
     }
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.gameObject.CompareTag("Target"))
+        if(collision.gameObject.CompareTag("Fire"))
         {
-            //Debug.Log("Collide with " + collision.gameObject);
+            FireController fire = new FireController();
+
+            temp += fire.TempVal;
+            SetTempBar();
+            SetTempText();
         }
     }
 
