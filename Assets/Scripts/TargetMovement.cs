@@ -16,11 +16,8 @@ public class TargetMovement : MonoBehaviour {
 	private bool arenaCollide;
 
 	void Start () {
-		//moveDirection.Set (0.1f, 0.1f, 0f);
-		//moveSpeed = moveSpeed * moveSpeed;
 		up = true;
 		right = true;
-		arenaCollide = false;
 	}
 
 	void Update () {
@@ -28,13 +25,10 @@ public class TargetMovement : MonoBehaviour {
 		if (!gameScript.isFinish) {
 			
 			Move ();
-			//Debug.Log ("Current Movement : " + moveDirection);
 			Debug.Log ("Beginning Movement. Up flag : " + up);
+			Debug.Log ("Beginning Movement. Right flag : " + right);
 		}
 	}
-		
-
-
 
 	void Move(){
 		
@@ -66,10 +60,6 @@ public class TargetMovement : MonoBehaviour {
 
 	void OnCollisionEnter2D(Collision2D collision)
 	{
-		if(collision.gameObject.CompareTag("Arena"))
-		{
-			arenaCollide = true;
-		}
 
 		if(collision.gameObject.CompareTag("ArenaVertical")){
 

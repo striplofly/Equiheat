@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Target
   - Arena
+  - ArenaVertical
+  - ArenaSides
   layers:
   - Default
   - TransparentFX
