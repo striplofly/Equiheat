@@ -8,8 +8,7 @@ public class GameController : MonoBehaviour {
     public GameObject losePanel;
     public Text playerTemp;
     public Text targetTemp;
-
-    private bool isFinish;
+	public bool isFinish;
 
     void Start ()
     {
@@ -27,7 +26,7 @@ public class GameController : MonoBehaviour {
 
     IEnumerator CheckIfFinish()
     {
-        if (Mathf.Round(PlayerController.temp) == Mathf.Round(TargetElementController.temp))
+        if (Mathf.Round(PlayerController.currentTemp) == Mathf.Round(TargetElementController.currentTemp))
         {
             TimerController.isCountdown = false;
             isFinish = true;
