@@ -27,47 +27,40 @@ public class TargetMovement : MonoBehaviour {
 		
 		if (!gameScript.isFinish) {
 			
-			MoveNew ();
+			Move ();
 			//Debug.Log ("Current Movement : " + moveDirection);
-			Debug.Log ("Arena Collide? : " + arenaCollide);
+			Debug.Log ("Beginning Movement. Up flag : " + up);
 		}
 	}
 		
+
+
+
 	void Move(){
-
-		transform.localPosition += moveDirection * moveSpeed * Time.deltaTime;
-		//transform.Translate (moveDirection * moveSpeed * Time.deltaTime);								//This kinda works too.
-		//Debug.Log ("Move Speed : " + moveSpeed);
-	}
-
-	void MoveNew(){
-
+		
 		if (up) {
 			
-			//moveDirection = transform.up;
 			moveDirection = Vector3.up;
 			transform.localPosition += moveDirection * moveSpeed * Time.deltaTime;
-
-			if (arenaCollide) {
-				up = false;
-				Debug.Log ("Arena collide : " + arenaCollide);
-			}
-			arenaCollide = false;
 		}
 
-		else if (!up) {
-			//moveDirection = -transform.up;
+		if (!up) {
 			moveDirection = Vector3.down;
 			transform.localPosition += moveDirection * moveSpeed * Time.deltaTime;
+		}
 
-			if (arenaCollide) {
-				up = true;
-				Debug.Log ("Arena collide : " + arenaCollide);
-			}
-			arenaCollide = false;
+		if (right) {
+
+			moveDirection = Vector3.right;
+			transform.localPosition += moveDirection * moveSpeed * Time.deltaTime;
+		}
+
+		if (!right) {
+
+			moveDirection = Vector3.left;
+			transform.localPosition += moveDirection * moveSpeed * Time.deltaTime;
 		}
 	}
-
 
 
 
@@ -77,5 +70,61 @@ public class TargetMovement : MonoBehaviour {
 		{
 			arenaCollide = true;
 		}
+
+		if(collision.gameObject.CompareTag("ArenaVertical")){
+
+			if (up) {
+				up = false;
+				Debug.Log ("Direction changed, projectile now moving downwards.");
+			}
+
+			else if (!up) {
+				up = true;
+				Debug.Log ("Direction changed, projectile now moving upwards.");
+			}
+		}
+
+		if(collision.gameObject.CompareTag("ArenaSides")){
+
+			if (right) {
+				right = false;
+				Debug.Log ("Direction changed, projectile now moving left.");
+			}
+
+			else if (!right) {
+				right = true;
+				Debug.Log ("Direction changed, projectile now moving right.");
+			}
+		}
 	}
 }
+
+/*
+void MoveOld(){
+
+	if (up) {
+
+		//moveDirection = transform.up;
+		moveDirection = Vector3.up;
+		transform.localPosition += moveDirection * moveSpeed * Time.deltaTime;
+
+		if (arenaCollide) {
+			up = false;
+			Debug.Log ("Arena collide : " + arenaCollide);
+		}
+		arenaCollide = false;
+	}
+
+	else if (!up) {
+		//moveDirection = -transform.up;
+		moveDirection = Vector3.down;
+		transform.localPosition += moveDirection * moveSpeed * Time.deltaTime;
+
+		if (arenaCollide) {
+			up = true;
+			Debug.Log ("Arena collide : " + arenaCollide);
+		}
+		arenaCollide = false;
+	}
+}
+*/
