@@ -13,3 +13,11 @@ EditorBuildSettings:
     path: Assets/Scenes/BasicLevelScene.unity
   - enabled: 1
     path: Assets/Scenes/+ForeignElement/FireLevelScene.unity
+  - enabled: 1
+    path: Assets/Scenes/+ForeignElement/FireHLevelScene.unity
+  - enabled: 1
+    path: Assets/Scenes/+ForeignElement/FireVLevelScene.unity
+  - enabled: 1
+    path: Assets/Scenes/+ForeignElement/FireFLevelScene.unity
+  - enabled: 1
+    path: Assets/Scenes/+ForeignElement/FireMLevelScene.unity

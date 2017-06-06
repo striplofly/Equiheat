@@ -11,11 +11,11 @@ public class GameController : MonoBehaviour {
     public Text targetTemp;
     public BoxCollider2D topWall, bottomWall, leftWall, rightWall;
 
-    private bool isFinish;
+    static public bool isFinish;
 
     void Start ()
     {
-        isFinish = false;
+        //isFinish = false;
 
         SetupGameBoundary();
     }
@@ -31,11 +31,19 @@ public class GameController : MonoBehaviour {
 
     IEnumerator CheckIfFinish()
     {
-        if (Mathf.Round(PlayerController.temp) == Mathf.Round(TargetElementController.temp))
+        if (Mathf.RoundToInt(PlayerController.temp) == Mathf.RoundToInt(TargetElementController.temp))
         {
             TimerController.isCountdown = false;
             isFinish = true;
             winPanel.SetActive(true);
+        }
+
+        if(Mathf.RoundToInt(PlayerController.temp) == 100)
+        {
+            isFinish = false;
+            TimerController.isCountdown = false;
+            FireController.isMoving = false;
+            PlayerController.isMoving = false;
         }
 
         yield return null;

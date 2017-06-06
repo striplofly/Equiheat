@@ -12,16 +12,17 @@ public class PlayerController : MonoBehaviour {
     public Scrollbar playerBar;
     public Text playerText;
 
-
+    static public bool isMoving;
     static public float temp;
 
     private Vector3 moveDirection;
     private float xMin, xMax, yMin, yMax;
-    private float maxTemp = 100f;
+    private int maxTemp = 100;
 
     void Awake()
     {
         temp = pTemp;
+        isMoving = true;
     }
 
 	void Start ()
@@ -34,13 +35,22 @@ public class PlayerController : MonoBehaviour {
     {
         moveDirection = joyStick.inputVector;
 
-        if(moveDirection.magnitude != 0)
+        if(moveDirection.magnitude != 0 && isMoving)
             transform.localPosition += moveDirection * moveSpeed;
     }
 
     void OnCollisionEnter2D(Collision2D collision)
     {
         if(collision.gameObject.CompareTag("Fire"))
+        {
+            FireController fire = new FireController();
+
+            temp += fire.TempVal;
+            SetTempBar();
+            SetTempText();
+        }
+
+        if (collision.gameObject.CompareTag("Ice"))
         {
             FireController fire = new FireController();
 
@@ -57,16 +67,27 @@ public class PlayerController : MonoBehaviour {
             temp -= transferHeat * Time.deltaTime;
             SetTempBar();
             SetTempText();
-        }        
+        }
+
+        if (collision.gameObject.CompareTag("Fire"))
+        {
+            FireController fire = new FireController();
+
+            temp += fire.TempVal * Time.deltaTime;
+            SetTempBar();
+            SetTempText();
+        }
     }  
 
     void SetTempBar()
     {
-        playerBar.size = temp / maxTemp;
+        if(Mathf.RoundToInt(temp) != maxTemp)
+            playerBar.size = temp / maxTemp;
     }
 
     void SetTempText()
     {
-        playerText.text = temp.ToString("N0");
+        if (Mathf.RoundToInt(temp) != maxTemp)
+            playerText.text = temp.ToString("N0");
     }
 }

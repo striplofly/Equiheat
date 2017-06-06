@@ -5,8 +5,10 @@ public class FireController : MonoBehaviour
 {
     public int tempVal = 5;
     public float speed = 5f;
-    public bool isHorizontal, isVertical, isMoving;
+    public bool isHorizontal, isVertical, isFreeMove;
     public Transform player;
+
+    static public bool isMoving;
 
     private Vector3 moveLeft, moveRight, moveUp, moveDown;
     private Rigidbody2D rigidBody;
@@ -21,36 +23,45 @@ public class FireController : MonoBehaviour
 
         rigidBody = GetComponent<Rigidbody2D>();
 
+        isMoving = true;
         goRight = true;
     }
 
 	void Update ()
     {
-        // horizontal   
-        if (isHorizontal)
-            MoveHorizontal();
+        if(isMoving)
+        {
+            // horizontal   
+            if (isHorizontal)
+                MoveHorizontal();
 
-        // vertical
-        if (isVertical)
-            MoveVertical();
+            // vertical
+            if (isVertical)
+                MoveVertical();
 
-        // free - follow player
-        if (isMoving)
-            MoveFree();
+            // free - follow player
+            if (isFreeMove)
+                MoveFree();
+        }
     }
 
     void MoveHorizontal()
     {
-        if(goRight)
+        transform.position = new Vector3(Mathf.PingPong(Time.time, 5), transform.position.y , transform.position.z);
+
+        /*if(goRight)
             transform.position += moveRight * speed * Time.deltaTime;
 
         if(goLeft)
+        {
             transform.position += moveLeft * speed * Time.deltaTime;
+            Debug.Log("left");
+        }*/
     }
 
     void MoveVertical()
     {
-        transform.position = new Vector3(transform.position.x, Mathf.PingPong(Time.time, 8), transform.position.z);
+        transform.position = new Vector3(transform.position.x, Mathf.PingPong(Time.time, 3), transform.position.z);
     }
 
     void MoveFree()
