@@ -8,6 +8,7 @@ public class PlayerController : MonoBehaviour {
     public float pTemp = 50.0f;
     public float moveSpeed = 5.0f;
     public float transferHeat = 0.5f;
+    public float relaunchFire = 3f;
     public GameObject bg;
     public Scrollbar playerBar;
     public Text playerText;
@@ -52,11 +53,8 @@ public class PlayerController : MonoBehaviour {
 
         if (collision.gameObject.CompareTag("Ice"))
         {
-            FireController fire = new FireController();
-
-            temp += fire.TempVal;
-            SetTempBar();
-            SetTempText();
+            FireController.isMoving = false;
+            Invoke("RelaunchFireElement",relaunchFire);
         }
     }
 
@@ -89,5 +87,10 @@ public class PlayerController : MonoBehaviour {
     {
         if (Mathf.RoundToInt(temp) != maxTemp)
             playerText.text = temp.ToString("N0");
+    }
+
+    void RelaunchFireElement()
+    {
+        FireController.isMoving = true;
     }
 }
