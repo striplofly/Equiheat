@@ -9,6 +9,9 @@ TagManager:
   - Wall
   - PingPong
   - Ice
+  - Arena
+  - ArenaVertical
+  - ArenaSides
   layers:
   - Default
   - TransparentFX

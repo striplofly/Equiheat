@@ -9,9 +9,11 @@ public class GameController : MonoBehaviour {
     public GameObject losePanel;
     public Text playerTemp;
     public Text targetTemp;
+
     public BoxCollider2D topWall, bottomWall, leftWall, rightWall;
 
     static public bool isFinish;
+
 
     void Start ()
     {
@@ -31,7 +33,7 @@ public class GameController : MonoBehaviour {
 
     IEnumerator CheckIfFinish()
     {
-        if (Mathf.RoundToInt(PlayerController.temp) == Mathf.RoundToInt(TargetElementController.temp))
+        if (Mathf.Round(PlayerController.currentTemp) == Mathf.Round(TargetElementController.currentTemp))
         {
             TimerController.isCountdown = false;
             isFinish = true;

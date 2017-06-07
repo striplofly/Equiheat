@@ -5,8 +5,8 @@ using UnityEngine.UI;
 public class PlayerController : MonoBehaviour {
 
     public VirtualJoyStick joyStick;
-    public float pTemp = 50.0f;
-    public float moveSpeed = 5.0f;
+	  public float moveSpeed;
+    public float initialTemp = 50.0f;
     public float transferHeat = 0.5f;
     public float relaunchFire = 3f;
     public GameObject bg;
@@ -14,7 +14,8 @@ public class PlayerController : MonoBehaviour {
     public Text playerText;
 
     static public bool isMoving;
-    static public float temp;
+    static public float currentTemp;
+
 
     private Vector3 moveDirection;
     private float xMin, xMax, yMin, yMax;
@@ -24,6 +25,7 @@ public class PlayerController : MonoBehaviour {
     {
         temp = pTemp;
         isMoving = true;
+		    currentTemp = initialTemp;
     }
 
 	void Start ()
@@ -34,14 +36,27 @@ public class PlayerController : MonoBehaviour {
 	
 	void Update ()
     {
-        moveDirection = joyStick.inputVector;
-
-        if(moveDirection.magnitude != 0 && isMoving)
-            transform.localPosition += moveDirection * moveSpeed;
+		PlayerMove ();
     }
 
-    void OnCollisionEnter2D(Collision2D collision)
+	void PlayerMove (){
+		moveDirection = joyStick.inputVector;
+
+		if (moveDirection.magnitude != 0)
+		{
+			transform.localPosition += moveDirection * moveSpeed;
+
+			//float clampX = Mathf.Clamp(transform.localPosition.x, xMin, xMax);
+			//float clampY = Mathf.Clamp(transform.localPosition.y, yMin, yMax);
+			//transform.localPosition = new Vector3(clampX, clampY, transform.localPosition.z);
+		}
+			
+		//Debug.Log ("Player Move Values : " + moveDirection);
+	}
+
+	void OnCollisionStay2D(Collision2D collision)
     {
+
         if(collision.gameObject.CompareTag("Fire"))
         {
             FireController fire = new FireController();
@@ -60,12 +75,11 @@ public class PlayerController : MonoBehaviour {
 
     void OnCollisionStay2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Target"))
-        {
-            temp -= transferHeat * Time.deltaTime;
-            SetTempBar();
-            SetTempText();
-        }
+        if (collision.gameObject.CompareTag ("Target")) {
+		    	currentTemp -= transferHeat * Time.deltaTime;
+		    	SetTempBar ();
+			    SetTempText ();
+	    	} 
 
         if (collision.gameObject.CompareTag("Fire"))
         {
@@ -75,12 +89,14 @@ public class PlayerController : MonoBehaviour {
             SetTempBar();
             SetTempText();
         }
+
     }  
 
     void SetTempBar()
     {
         if(Mathf.RoundToInt(temp) != maxTemp)
             playerBar.size = temp / maxTemp;
+
     }
 
     void SetTempText()
@@ -92,5 +108,6 @@ public class PlayerController : MonoBehaviour {
     void RelaunchFireElement()
     {
         FireController.isMoving = true;
+
     }
 }
