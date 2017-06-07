@@ -5,34 +5,33 @@ using UnityEngine.UI;
 public class PlayerController : MonoBehaviour {
 
     public VirtualJoyStick joyStick;
-	public float moveSpeed;
+	  public float moveSpeed;
     public float initialTemp = 50.0f;
     public float transferHeat = 0.5f;
+    public float relaunchFire = 3f;
     public GameObject bg;
     public Scrollbar playerBar;
     public Text playerText;
 
-	static public float currentTemp;
+    static public bool isMoving;
+    static public float currentTemp;
+
 
     private Vector3 moveDirection;
     private float xMin, xMax, yMin, yMax;
-    private float maxTemp = 100f;
+    private int maxTemp = 100;
 
     void Awake()
     {
-		currentTemp = initialTemp;
+        temp = pTemp;
+        isMoving = true;
+		    currentTemp = initialTemp;
     }
 
 	void Start ()
     {
         SetTempBar();
-		SetTempText();
-
-        // will change this later
-        xMin = -8;
-        xMax = 8;
-        yMin = -5;
-        yMax = 5;
+        SetTempText();
     }
 	
 	void Update ()
@@ -57,23 +56,58 @@ public class PlayerController : MonoBehaviour {
 
 	void OnCollisionStay2D(Collision2D collision)
     {
-		//Debug.Log ("Collision detected");
 
-		if (collision.gameObject.CompareTag ("Target")) {
-			currentTemp -= transferHeat * Time.deltaTime;
-			SetTempBar ();
-			SetTempText ();
-		} 
+        if(collision.gameObject.CompareTag("Fire"))
+        {
+            FireController fire = new FireController();
+
+            temp += fire.TempVal;
+            SetTempBar();
+            SetTempText();
+        }
+
+        if (collision.gameObject.CompareTag("Ice"))
+        {
+            FireController.isMoving = false;
+            Invoke("RelaunchFireElement",relaunchFire);
+        }
+    }
+
+    void OnCollisionStay2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag ("Target")) {
+		    	currentTemp -= transferHeat * Time.deltaTime;
+		    	SetTempBar ();
+			    SetTempText ();
+	    	} 
+
+        if (collision.gameObject.CompareTag("Fire"))
+        {
+            FireController fire = new FireController();
+
+            temp += fire.TempVal * Time.deltaTime;
+            SetTempBar();
+            SetTempText();
+        }
 
     }  
 
     void SetTempBar()
     {
-		playerBar.size = currentTemp / maxTemp;
+        if(Mathf.RoundToInt(temp) != maxTemp)
+            playerBar.size = temp / maxTemp;
+
     }
 
     void SetTempText()
     {
-		playerText.text = currentTemp.ToString("N0");
+        if (Mathf.RoundToInt(temp) != maxTemp)
+            playerText.text = temp.ToString("N0");
+    }
+
+    void RelaunchFireElement()
+    {
+        FireController.isMoving = true;
+
     }
 }
