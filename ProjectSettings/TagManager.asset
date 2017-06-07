@@ -5,10 +5,6 @@ TagManager:
   serializedVersion: 2
   tags:
   - Target
-  - Fire
-  - Wall
-  - PingPong
-  - Ice
   - Arena
   - ArenaVertical
   - ArenaSides
